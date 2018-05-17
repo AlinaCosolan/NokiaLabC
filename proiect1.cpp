@@ -20,12 +20,27 @@ template <class T> class StateMachine
     public: void print()
     {
         for(SM sm : container_) 
-            cout<<sm.IpRangeStart<<" "<<sm.IpRangeStop<<" "<<sm.clients;
+            cout<<sm.IpRangeStart<<" "<<sm.IpRangeStop<<" "<<sm.clients<<endl;
     }
+    public: void ChangeNrClients(string IpRangeStart, string IpRangeStop,int change)
+    {
+        for(int i=0;i<container_.size();i++)
+    	{
+    	    if(IpRangeStop == container_[i].IpRangeStop && IpRangeStart == container_[i].IpRangeStart)
+    	    {
+    	        if(change==1)//increment
+    	        {
+    	            container_[i].clients=container_[i].clients+1;
+    	        }
+    	        else
+    	           container_[i].clients=container_[i].clients-1;
+    	    }
+    	}
+	}
 };
 
-template<class T> std::shared_ptr< StateMachine<T> > SMPtr_;
-template<class T> std::shared_ptr< const StateMachine<T> > SMCPtr_;
+//template<class T> std::shared_ptr< StateMachine<T> > SMPtr_;
+//template<class T> std::shared_ptr< const StateMachine<T> > SMCPtr_;
  
 template <class T,class U, class Z>
 class Watcher
@@ -59,8 +74,8 @@ class Watcher
   	}
   	
 };
-template <class T,class U, class Z>std::shared_ptr< Watcher<T,U,Z> > watcherPtr_;
-template <class T,class U, class Z>std::shared_ptr< const Watcher<T,U,Z> > watcherCPtr_;
+//template <class T,class U, class Z>std::shared_ptr< Watcher<T,U,Z> > watcherPtr_;
+//template <class T,class U, class Z>std::shared_ptr< const Watcher<T,U,Z> > watcherCPtr_;
 
 template <class T,class U, class Z> 
 class Notifier
@@ -74,13 +89,25 @@ template <class T,class U, class Z> std::shared_ptr<const Notifier<T,U,Z>> notif
 
 int main()
 {
-    struct SM sm;
+    SM sm;
     sm.IpRangeStart="100.10";
     sm.IpRangeStop="100.20";
     sm.clients=20;
+    
+    SM sm1;
+    sm1.IpRangeStart="100.21";
+    sm1.IpRangeStop="100.30";
+    sm1.clients=2;
+    
     StateMachine<int> statemachine;
     statemachine.addInVector(sm);
+    statemachine.addInVector(sm1);
     statemachine.print();
+    
+    cout<<endl;
+    statemachine.ChangeNrClients("100.10","100.20",1);
+      statemachine.ChangeNrClients("100.21","100.30",0);
+    statemachine.print();
+    
     return 0;
 }
-
