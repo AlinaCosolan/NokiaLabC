@@ -39,14 +39,14 @@ template <class T> class StateMachine
 	}
 };
 
-//template<class T> std::shared_ptr< StateMachine<T> > SMPtr_;
-//template<class T> std::shared_ptr< const StateMachine<T> > SMCPtr_;
+template<class T> using SMPtr_ = std::shared_ptr< StateMachine<T>> ;
+template<class T> using SMCPtr_= std::shared_ptr< const StateMachine<T>>;
  
 template <class T,class U, class Z>
 class Watcher
 {
     public:
-  	    list< shared_ptr< StateMachine<T> > > stateMachinesPtr_;
+  	    list< SMPtr_<T> > stateMachinesPtr_;
   	    U message_; 
   	    Z relevance_;
   	    
@@ -74,18 +74,19 @@ class Watcher
   	}
   	
 };
-//template <class T,class U, class Z>std::shared_ptr< Watcher<T,U,Z> > watcherPtr_;
-//template <class T,class U, class Z>std::shared_ptr< const Watcher<T,U,Z> > watcherCPtr_;
+
+template <class T,class U, class Z> using watcherPtr_ = std::shared_ptr< Watcher<T,U,Z> > ;
+template <class T,class U, class Z> using watcherCPtr_=std::shared_ptr< const Watcher<T,U,Z> > ;
 
 template <class T,class U, class Z> 
 class Notifier
 {
     private:
-        vector<shared_ptr< const Watcher<T,U,Z> >> subscribers_;
+        vector<watcherCPtr_<T,U,Z>> subscribers_;
 };
 
-template <class T,class U, class Z> std::shared_ptr<Notifier<T,U,Z>> notifierPtr_;
-template <class T,class U, class Z> std::shared_ptr<const Notifier<T,U,Z>> notifierCPtr_; 
+template <class T,class U, class Z> using notifierPtr_ = std::shared_ptr<Notifier<T,U,Z>> ;
+template <class T,class U, class Z> using notifierCPtr_= std::shared_ptr<const Notifier<T,U,Z>> ; 
 
 int main()
 {
@@ -106,7 +107,7 @@ int main()
     
     cout<<endl;
     statemachine.ChangeNrClients("100.10","100.20",1);
-      statemachine.ChangeNrClients("100.21","100.30",0);
+    statemachine.ChangeNrClients("100.21","100.30",0);
     statemachine.print();
     
     return 0;
