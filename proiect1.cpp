@@ -83,6 +83,18 @@ class Notifier
 {
     private:
         vector<watcherCPtr_<T,U,Z>> subscribers_;
+    void notify()
+    {
+        iterator<T,U,Z> it;
+         for( watcherCPtr_ <T,U,Z>sub : subscribers_) 
+         {
+            for (it = sub.begin(); it != sub.end(); it++)
+            {
+                if(it->relevance_ >0)
+                cout<<"Mesajul:"<<it->message_;
+            }
+         }
+    }
 };
 
 template <class T,class U, class Z> using notifierPtr_ = std::shared_ptr<Notifier<T,U,Z>> ;
